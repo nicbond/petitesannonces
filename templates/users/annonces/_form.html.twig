@@ -1,0 +1,22 @@
+{{ "\n"|nl2br }}
+
+<div class="well">
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+    <div class="form-group">
+        {{ form_row(form.title, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    {{ "\n"|nl2br }}
+
+    <div class="form-group">
+        {{ form_row(form.content, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    {{ "\n"|nl2br }}
+
+    {{ form_rest(form) }}
+        {{ "\n"|nl2br }}
+        <button class="btn btn-primary">{{ button|default('Enregistrer') }}</button>
+    {{ form_end(form) }}
+</div>

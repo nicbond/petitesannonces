@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Add a category'|trans}}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>{{ 'Add a category'|trans}}</h1>
+            {{ include('admin/categories/_form.html.twig', {form: form, button: 'Add'|trans}) }}
+    </div>
+{% endblock %}
