@@ -35,6 +35,8 @@ class UsersController extends AbstractController
 
     /**
      * @Route("/users/annonces/ajout", name="users_annonces_ajout")
+     * @param Request $request
+     * @param UserInterface $user
      */
     public function ajoutAnnonce(Request $request, UserInterface $user)
     {
