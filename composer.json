@@ -11,6 +11,7 @@
         "ext-iconv": "*",
         "antishov/doctrine-extensions-bundle": "^1.4",
         "friendsofsymfony/ckeditor-bundle": "^2.3",
+        "helios-ag/fm-elfinder-bundle": "^10.1",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "*",
         "symfony/console": "*",
@@ -69,7 +70,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "elfinder:install": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
