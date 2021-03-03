@@ -1,0 +1,12 @@
+{% extends 'users.html.twig' %}
+
+{% block title %}{{ 'Modify the profile of' |trans}} {{ app.user.firstname }} {{ app.user.lastname }}{% endblock %}
+
+{% block body %}
+    <div class="grix xs4 container">
+        <div class="col-xs4">
+            <h1>{{ 'Modify the profile of' |trans}} {{ app.user.firstname }} {{ app.user.lastname }}</h1>
+            {{ include('users/profil/_form.html.twig', {form: form, button: 'Edit'|trans}) }}
+        </div>
+    </div>
+{% endblock %}
