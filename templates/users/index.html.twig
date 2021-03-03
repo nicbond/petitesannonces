@@ -1,6 +1,6 @@
 {% extends 'users.html.twig' %}
 
-{% block title %}{{ 'Hello'|trans}} UsersController!{% endblock %}
+{% block title %}{{ 'Profil of' |trans}} {{ app.user.firstname }} {{ app.user.lastname }}{% endblock %}
 
 {% block body %}
     <div class="grix xs4 container">
