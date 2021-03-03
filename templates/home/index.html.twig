@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}{{ 'Hello'|trans}} HomeController!{% endblock %}
 
 {% block body %}
 <style>
@@ -9,16 +9,16 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>{{ 'Hello'|trans}} {{ controller_name }}! ✅</h1>
 
     {% for message in app.flashes('success') %}
         <div class="alert alert-success" role="alert">{{ message }}</div>
     {% endfor %}
 
-    This friendly message is coming from:
+    {{ 'This friendly message is coming from:'|trans}}
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/petitesannonces/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/petitesannonces/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
+        <li>{{ 'Your controller at'|trans}} <code><a href="{{ 'C:/wamp64/www/petitesannonces/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
+        <li>{{ 'Your template at'|trans}} <code><a href="{{ 'C:/wamp64/www/petitesannonces/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
     </ul>
 </div>
 {% endblock %}

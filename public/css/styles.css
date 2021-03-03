@@ -3,7 +3,7 @@
 }
 
 .footer{
-display:flex;
+display: inline-block;
 background-color: black;
 position: fixed;
 bottom: 0;
@@ -12,4 +12,5 @@ right: 0;
 height: 50px;
 width: 100%;
 border-top: 1px solid white;
+text-align: center;
 }
