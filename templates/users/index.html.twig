@@ -1,26 +1,31 @@
-{% extends 'base.html.twig' %}
+{% extends 'users.html.twig' %}
 
 {% block title %}{{ 'Hello'|trans}} UsersController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="grix xs4 container">
+        <div class="col-xs4">
+            <h1>{{ 'Profil of' |trans}} {{ app.user.firstname }} {{ app.user.lastname }}</h1>
+        </div>
+        <div class="col-xs1">{{ 'LastName' |trans}} :</div>
+        <div class="col-xs3">{{ app.user.lastname }}</div>
+        <div class="col-xs1">{{ 'FirstName'|trans}} :</div>
+        <div class="col-xs3">{{ app.user.firstname }}</div>
+        <div class="col-xs1">{{ 'Email'|trans}} :</div>
+        <div class="col-xs3">{{ app.user.email }}</div>
+        <div class="col-xs4">
+            <a href="#" class="btn shadow-1 rounded-1 green">{{ 'Modify the profile' |trans}}</a>
+            <a href="#" class="btn shadow-1 rounded-1 green">{{ 'Modify the password' |trans}}</a>
+        </div>
 
-        {% for message in app.flashes('success') %}
-           <div class="alert alert-success">
-                {{ message }}
-           </div>
+        <div class="col-xs4">
+            <h1>{{ 'Announces of' |trans}} {{ app.user.firstname }} {{ app.user.lastname }} ( {{ app.user.annonces | length }} )</h1>
+        </div>
+
+        {% for annonce in app.user.annonces %}
+            <div class="col-xs1">{{ 'Title' |trans}} :</div>
+            <div class="col-xs3">{{ annonce.title }}</div>
         {% endfor %}
 
-<div class="example-wrapper">
-    <h1>{{ 'Hello'|trans}} {{ controller_name }}! ✅</h1>
-
-    {{ 'This friendly message is coming from:'|trans}}
-    <ul>
-        <li>{{ 'Your controller at'|trans}} <code><a href="{{ 'C:/wamp64/www/petitesannonces/src/Controller/UsersController.php'|file_link(0) }}">src/Controller/UsersController.php</a></code></li>
-        <li>{{ 'Your template at'|trans}} <code><a href="{{ 'C:/wamp64/www/petitesannonces/templates/users/index.html.twig'|file_link(0) }}">templates/users/index.html.twig</a></code></li>
-    </ul>
-</div>
+    </div>
 {% endblock %}
