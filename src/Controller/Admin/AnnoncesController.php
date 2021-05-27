@@ -66,6 +66,7 @@ class AnnoncesController extends AbstractController
         $annonce = $this->repository->find($id);
 
         if ($this->isCsrfTokenValid('delete'. $annonce->getId(), $request->get('_token'))) {
+            $nom = $image->getName();
             $this->entityManager->remove($annonce);
             $this->entityManager->flush();
             $this->addFlash('success', 'Annonce supprimée avec succès');

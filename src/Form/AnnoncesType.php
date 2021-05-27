@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class AnnoncesType extends AbstractType
 {
@@ -17,10 +17,16 @@ class AnnoncesType extends AbstractType
     {
         $builder
             ->add('title', TextType::class)
-            ->add('content', CKEditorType::class)
+            ->add('content', TextType::class)
             ->add('categories', EntityType::class, [
                 'class'    => Categories::class,
                 'choice_label' => 'name'
+            ])
+            ->add('images', FileType::class, [
+                'label' => false,
+                'required' => false,
+                'multiple' => true,
+                'mapped' => false
             ])
         ;
     }

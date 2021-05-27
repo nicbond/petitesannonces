@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Form\EditProfileType;
 use App\Form\AnnoncesType;
 use App\Entity\Annonces;
+use App\Entity\Images;
 
 class UsersController extends AbstractController
 {
@@ -34,6 +36,14 @@ class UsersController extends AbstractController
     }
 
     /**
+     * @Route("/users/annonces", name="users_annonces")
+     */
+    public function userAnnonces(): Response
+    {
+        return $this->render('users/annonces.html.twig');
+    }
+
+    /**
      * @Route("/users/annonces/ajout", name="users_annonces_ajout")
      * @param Request $request
      * @param UserInterface $user
@@ -47,6 +57,8 @@ class UsersController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->gestionImages($form, $annonce);
+
             $this->entityManager->persist($annonce);
             $this->entityManager->flush();
             $this->addFlash('success', 'Nouvelle annonce créée avec succès');
@@ -55,7 +67,32 @@ class UsersController extends AbstractController
         }
 
         return $this->render('users/annonces/ajout.html.twig', [
-            //'annonce' => $annonce,
+            'annonce' => $annonce,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/users/annonces/{id}/edit", name="users_annonces_edit")
+     * @param Request $request
+     * @param Annonces $annonce
+     */
+    public function editAnnonce(Request $request, Annonces $annonce)
+    {
+        $form = $this->createForm(AnnoncesType::class, $annonce);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->gestionImages($form, $annonce);
+
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Votre annonce a été modifié avec succès');
+
+            return $this->redirectToRoute('users');
+        }
+
+        return $this->render('users/annonces/edit.html.twig', [
+            'annonce' => $annonce,
             'form' => $form->createView()
         ]);
     }
@@ -107,5 +144,53 @@ class UsersController extends AbstractController
         }
 
         return $this->render('users/profil/edit-password.html.twig');
+    }
+
+    /**
+     * @Route("/supprime/image/{id}", name="annonces_suppression_image", methods={"DELETE"})
+     */
+    public function suppressionImage(Images $image, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        //On vérifie si le token est valide
+        if ($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])) {
+
+            //On récupère alors le nom de l'image
+            $name = $image->getName();
+            //On supprime physiquement l'image sur le disque
+            unlink($this->getParameter('images_directory').'/'.$name);
+
+            //On supprime l'entrée de la base
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($image);
+            $entityManager->flush();
+            return new JsonResponse(['success' => 1]);
+        }
+
+        return new JsonResponse(['error' => 'Token invalide'], 400);
+    }
+
+    private function gestionImages($form, Annonces $annonce)
+    {
+        //On récupére les images transmises
+        $images = $form->get('images')->getData();
+
+        //On boucle sur les images
+        foreach($images as $image) {
+            //On génère un nouveau nom de fichier
+            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+            //On copie le fichier dans le dossier uploads
+            $image->move(
+                $this->getParameter('images_directory'),
+                $fichier
+            );
+            
+            //On stocke l'image dans la base de données (son nom)
+            $img = new Images();
+            $img->setName($fichier);
+            $annonce->addImage($img);
+        }
     }
 }

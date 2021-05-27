@@ -1,0 +1,28 @@
+{% extends 'users.html.twig' %}
+
+{% block title %}{{ 'Announces of' |trans}} {{ app.user.firstname }} {{ app.user.lastname }}{% endblock %}
+
+{% block body %}
+    <div class="grix xs4 container">
+
+        {% for message in app.flashes('success') %}
+        <div class="col-xs4">
+            <div class="p-3 my-2 rounded-2 success">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="col-xs4">
+            <h1>{{ 'Announces of' |trans}} {{ app.user.firstname }} {{ app.user.lastname }} ( {{ app.user.annonces | length }} )</h1>
+        </div>
+
+        {% for annonce in app.user.annonces %}
+            <div class="col-xs1">{{ 'Title' |trans}} :</div>
+            <div class="col-x1">{{ annonce.title }}</div>
+            <div class="col-xs1"><a href="{{ path('users_annonces_edit', {'id': annonce.id}) }}" class="btn shadow-1 rounded-1 green">{{ 'Edit'|trans}}</a></div>
+            </br>
+        {% endfor %}
+
+    </div>
+{% endblock %}
