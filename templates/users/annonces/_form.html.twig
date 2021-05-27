@@ -17,6 +17,19 @@
 
     {{ form_rest(form) }}
         {{ "\n"|nl2br }}
-        <button class="btn btn-primary">{{ button|default('Enregistrer') }}</button>
+
+        {# Vérifier si la route est "users_annonces_edit" on affiche les images #}
+        {% if app.request.attributes.get('_route') == 'users_annonces_edit' %}
+                <h2>Images</h2>
+                {% for image in annonce.images %}
+                    <div>
+                        <img src="{{ asset('/images/' ~ image.name) }}" alt="Image" width="150">
+                        <a href="{{ path('annonces_suppression_image', {id: image.id}) }}"
+                        class="btn shadow-1 rounded-1 red" data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">Supprimer</a>
+                    </div>
+                {% endfor %}
+        {% endif %}
+
+        <button class="btn shadow-1 rounded-1 green">{{ button|default('Enregistrer') }}</button>
     {{ form_end(form) }}
 </div>

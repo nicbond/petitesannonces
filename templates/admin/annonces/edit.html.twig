@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Modify an announce'|trans}} {% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>{{ 'Modify an announce'|trans}}</h1>
+            {{ include('admin/annonces/_form.html.twig', {form: form, button: 'Modify'|trans}) }}
+    </div>
+{% endblock %}

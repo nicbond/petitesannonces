@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Manage categories'|trans}} {% endblock %}
+
+{% block body %}
+    <h1>{{ 'Manage categories'|trans}}</h1>
+    <div class="responsive-table">
+
+        {% for message in app.flashes('success') %}
+        <div class="col-xs4">
+            <div class="p-3 my-2 rounded-2 success">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+
+        <table class="table striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>{{ 'Name'|trans}}</th>
+                    <th>Parent</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.parent }}</td>
+                    <td class="text-center">
+                        <a href="{{ path('admin_categories_modifier', {'id': category.id}) }}" class="btn shadow-1 rounded-1 green">Editer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container mt-4">
+        <div class="text-right">
+            <a href="{{ path('admin_categories_ajout') }}" class="btn shadow-1 rounded-1 green">{{ 'Add a category' |trans}}</a>
+        </div>
+    </div>
+{% endblock %}

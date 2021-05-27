@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Manage announces'|trans}} {% endblock %}
+
+{% block body %}
+    <h1>{{ 'Manage announces'|trans}}</h1>
+    <div class="responsive-table">
+
+        {% for message in app.flashes('success') %}
+        <div class="col-xs4">
+            <div class="p-3 my-2 rounded-2 success">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+
+        <table class="table striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>{{ 'Title'|trans}}</th>
+                    <th>Date</th>
+                    <th>Active</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for annonce in annonces %}
+                <tr>
+                    <td>{{ annonce.id }}</td>
+                    <td>{{ annonce.title }}</td>
+                    <td>{{ annonce.createdAt|date }}</td>
+                    <td>
+                        <label class="form-switch mt-2">
+                            Off
+                            <input type="checkbox" {{ (annonce.active) ? 'checked' : 
+                            ''}} data-id="{{annonce.id}}">
+                            <span class="slider"></span>
+                            On
+                        </label>
+                    </td>
+                    <td>
+                    <form method="post" action="{{ path('admin_annonces_supprimer', {'id': annonce.id}) }}" style="display: inline-block" 
+                        onsubmit="return confirm('Etes vous vraiment sûr de vouloir supprimer l annonce: {{annonce.title}}?')">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ annonce.id) }}">
+                        <button class="btn shadow-1 rounded-1 red">Supprimer</button>
+                    </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.onload = () => {
+            let activer = document.querySelectorAll("[type=checkbox]")
+            for (let bouton of activer) {
+                bouton.addEventListener("click", function() {
+                    let xmlhttp = new XMLHttpRequest;
+                    xmlhttp.open("get", `/admin/annonces/activer/${this.dataset.id}`) 
+                    xmlhttp.send()
+                })
+            }
+        }
+    </script>
+{% endblock %}
